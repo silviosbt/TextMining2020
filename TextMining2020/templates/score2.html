@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block head %}
+ {{ super() }}
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}">
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/common.css') }}"> 
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/te.css') }}">
+<!-- <script type="text/javascript" src="{{ url_for('static', filename='js/xlsx.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/common.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/te.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/plugins.js') }}"></script> -->
+{% endblock %}
+{% block content %}
+ <!--  <div class="w3-row w3-padding-64"> --> 
+ <div class="w3-row">
+    <div class="w3-twothird w3-container"   style="width:1000px">
+    <br>
+    <br>
+	<h1 class="w3-text-teal">Risultato:</h1>
+     <p>
+     {% if notResults %}
+     <p><span style="font-size: 12pt;">Addestrato modello: <b style="color:red">{{ notResults['modello'] }}</b></span> 
+     <p><span style="font-size: 12pt;">Tempo di esecuzione: <b style="color:red">{{ notResults['time_elapsed']}}</b></span>
+     <p><span style="font-size: 12pt;">Directory di output: <b style="color:red">{{ notResults['output_dir']}}</b></span>
+     {% endif %}
+	    
+    </div>
+  </div>
+  {% endblock %}

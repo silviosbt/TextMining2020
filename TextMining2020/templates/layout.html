@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Text Classifier</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+ {% block head %}{% endblock %}
+
+<style>
+html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
+/* .w3-sidebar {
+  z-index: 3;
+  width: 250px;
+  top: 43px;
+  bottom: 0;
+  height: inherit;
+} */
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<div class="w3-top"> <!--   style="margin-left:100px; margin-right: 100px"> -->
+  <div class="w3-bar w3-theme w3-top w3-left-align w3-large" >
+    <a class="w3-bar-item w3-button w3-right w3-hide-large w3-hover-white w3-large w3-theme-l1" href="javascript:void(0)" onclick="w3_open()"><i class="fa fa-bars"></i></a>
+    <a href="/" class="w3-bar-item w3-button w3-hide-small w3-hover-white">Rank</a> 
+    <a href="/train" class="w3-bar-item w3-button w3-hide-small w3-hover-white">Train</a>
+    <a href="/about" class="w3-bar-item w3-button w3-hide-small w3-hover-white">About</a> 
+    <!--    
+    <a href="/" class="w3-bar-item w3-button w3-theme-l1">Rank</a> 
+    <a href="/" class="w3-bar-item w3-button w3-theme-l1">Train</a>
+    <a href="/about" class="w3-bar-item w3-button w3-theme-l1">About</a>
+    -->
+  </div>
+</div>
+
+<div class="w3-main"  style="margin-left:200px; margin-right: 100px">  <!--  style="margin-left:250px" -->
+{% block content %}
+{% endblock %}
+<!-- END MAIN -->
+</div>
+
+  <footer id="myFooter">
+    <div class="w3-container w3-theme-l1">
+      <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
+    </div>
+  </footer>
+
+<script>
+
+function validateForm() { 
+	var x = document.forms["form2"]["filepath"].value;
+	var y = document.forms["form2"]["testo"].value;
+	var z = document.forms["form2"]["codice"].value;
+
+	  if ((x == "" && y ==  "") || (x == null && y == null) || (x == null && y == "")){
+	    alert("Caricare un file e/o un testo da classificare");
+	    return false;
+	  }
+	  if ((y != "") && (z == "")){
+		  return confirm("non è stato assegnato nessun identificativo documento\n se non viene specificato il sistema ne assegnerà uno in automatico.\n \n Vuoi continuare?");
+	  }
+	  if ((y == "") && (z != "")){
+		  alert("Nessun documento associato all'identificativo inserito");
+		  return false;
+	  }
+	return true;	  
+} 
+
+function toggleBoxVisibility() {
+	if (document.getElementById("check").checked == true) {
+	    document.getElementById("boxfold").style.visibility = "visible";
+	    } 
+	else {
+	    document.getElementById("boxfold").style.visibility = "hidden";
+	    }
+	}
+	
+//$("table").tableExport();
+
+ /* $(function(){
+      alert("My First Jquery Test");
+   });
+*/
+
+new TableExport(document.getElementsByTagName("table"), {
+	  headers: true,                      // (Boolean), display table headers (th or td elements) in the <thead>, (default: true)
+	  footers: true,                      // (Boolean), display table footers (th or td elements) in the <tfoot>, (default: false)
+	  formats: [ "xls", "csv"],    // (String[]), filetype(s) for the export, (default: ['xlsx', 'csv', 'txt'])
+	  //formats: ["xlsx", "xls", "csv", "txt"],    // (String[]), filetype(s) for the export, (default: ['xlsx', 'csv', 'txt'])
+	  filename: "report",                     // (id, String), filename for the downloaded file, (default: 'id')
+	  bootstrap: true,                   // (Boolean), style buttons using bootstrap, (default: true)
+	  exportButtons: true,                // (Boolean), automatically generate the built-in export buttons for each of the specified formats (default: true)
+	  position: "top",                 // (top, bottom), position of the caption element relative to table, (default: 'bottom')
+	  ignoreRows: null,                   // (Number, Number[]), row indices to exclude from the exported file(s) (default: null)
+	  ignoreCols: null,                   // (Number, Number[]), column indices to exclude from the exported file(s) (default: null)
+	  trimWhitespace: true,               // (Boolean), remove all leading/trailing newlines, spaces, and tabs from cell text in the exported file(s) (default: false)
+	  RTL: false,                         // (Boolean), set direction of the worksheet to right-to-left (default: false)
+	  sheetname: "id"                     // (id, String), sheet name for the exported spreadsheet, (default: 'id')
+	});
+	
+
+</script>
+
+</body>
+</html>
+
+

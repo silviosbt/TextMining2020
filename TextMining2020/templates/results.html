@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+ {% block head %}
+ {{ super() }}
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}">
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/common.css') }}"> 
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/te.css') }}">
+<!-- <script type="text/javascript" src="{{ url_for('static', filename='js/xlsx.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/common.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/te.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/plugins.js') }}"></script> -->
+{% endblock %}
+
+
+{% block content %}
+ <!--  <div class="w3-row w3-padding-64"> --> 
+ <div class="w3-row">
+    <div class="w3-twothird w3-container"   style="width:1000px">
+	<h1 class="w3-text-teal">Risultato:</h1>
+     <p>
+     {% if results %}
+     <table border='1' class='dataframe'  id='idTable'> 
+	     <caption class="btn-toolbar top tableexport-id">
+		     <a href="{{ url_for('download', filename=linkxls) }}"><button class="btn btn-default xls">Export to xls</button></a>
+		     <a href="{{ url_for('download', filename=linkcsv) }}"><button class="btn btn-default csv">Export to csv</button></a>
+	     </caption>
+     <thead><tr style='text-align: right;'><th style='font-size: 12pt'>id</th><th  style='font-size: 12pt'>testo</th><th  style='font-size: 12pt'>classe</th></thead>
+    <tbody> 
+     {% for row in results %}
+    	 <tr><td>{{ row['id'] }}</td><td style="text-align: justify">{{ row['testo'] }}</td><td style='text-align: right'><b>{{ row['classe'] }}</b></td> </tr>
+      {% endfor %}
+      </tbody>
+     </table>
+     {% endif %}
+     {% if results_df %}
+       {{ results_df|safe }}
+     {% endif %}
+	</div> 
+   </div>
+
+  <!-- Pagination -->
+<!--   <div class="w3-center w3-padding-32">
+    <div class="w3-bar">
+      <a class="w3-button w3-black" href="#">1</a>
+      <a class="w3-button w3-hover-black" href="#">2</a>
+      <a class="w3-button w3-hover-black" href="#">3</a>
+      <a class="w3-button w3-hover-black" href="#">4</a>
+      <a class="w3-button w3-hover-black" href="#">5</a>
+      <a class="w3-button w3-hover-black" href="#">»</a>
+    </div>
+  </div> -->
+
+{% endblock %}
+

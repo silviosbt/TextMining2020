@@ -1,0 +1,131 @@
+{% extends "layout.html" %}
+{% block head %}
+ {{ super() }}
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}">
+<!--  <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/common.css') }}"> 
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/te.css') }}"> -->
+{% endblock %}
+{% block content %}
+  <div class="w3-row w3-padding-64">
+    <div class="w3-twothird w3-container">
+      <h1 class="w3-text-teal">Carica Dataset per Addestramento</h1>
+      <p>
+      <form action="{{ url_for('upload2_file') }}"method=post enctype=multipart/form-data>
+      	caricare un file excel o csv: 
+      	<input type=file name=file>
+      	<input type=submit value=Upload>
+      </form>
+      <p><font color="red">{% for message in get_flashed_messages() %}{{ message }}{% endfor %}</font>
+     <p><hr width=100% size=6 color=#000000>
+      <p>
+ 
+      <form name="form2"  action="{{ url_for('appTrainer.trainer') }}"  onsubmit="return validateForm()" method="post" >
+      <input type="hidden" id="filepath" name="filepath" value="{{ filename }}">  
+  		<div>
+  			 <input type="checkbox"  id="vocab" name="vocab"  value="true">
+  			 <label for="vocab">Utilizzare vocabolario:</label>
+  		</div>
+  		<div>
+  		    <!--  <input type="checkbox"  id="analisi" name="analis"  value="True"> -->
+  		    <input type="checkbox" id="check" onclick="toggleBoxVisibility()" name="stratifiedCV"  value="true">
+    		<label for="stratifiedCV">Eseguire una analisi kfold cross validation stratificata:</label>
+  		</div>
+
+  		<div id="boxfold"  style="visibility: hidden"> 
+  			<label for="kfold"><span>Scegliere numero di fold</span></label>	
+        	<select id="idfold" name="kfold">
+        		<option value="5">5 fold</option>
+        		<option value="10">10 fold</option>
+        		<option value="15">15 fold</option>
+       		</select>
+  		</div>
+  		<p><hr width=100% size=6 color=#000000>
+      	<label for="trainer"><span>Scegliere modello  da addestrare:</span></label>
+        <select id="trainer" name="trainer">
+        	<option value="SVM">SVM (Support Vector Machine)</option>
+        	<option value="MLP">MLP (MultiLayer Percetron)</option>
+        	<!--   <option value="CNN">CNN (Convolutional Neural Network)</option> -->
+       </select>
+       <input type=submit value=addestra>
+	</form>  
+	
+	<h1 class="w3-text-teal">Risultato:</h1>
+     {% if results %}
+     <h2 class="w3-text-teal">Risultati KFold Cross Validation Stratificata (macro)</h2>
+     <table border='1' class='dataframe'  id='idTable'> 
+     <thead><tr style='text-align: right'><th style='font-size: 12pt'>Fold</th><th  style='font-size: 12pt'>Accuratezza</th><th  style='font-size: 12pt'>Precisione</th><th  style='font-size: 12pt'>Recall</th><th  style='font-size: 12pt'>F1score</th></tr></thead>
+    <tbody> 
+     {% for row in results %}
+    	 <tr>
+    	 <td style="text-align: right ; font-size: 12pt">{{ row['Fold'] }}</td>
+    	 <td style="text-align: right ; font-size: 12pt">{{ row['Accuratezza'] }}</td>
+    	 <td style='text-align: right ; font-size: 12pt'>{{ row['Precisione'] }}</td> 
+    	 <td style='text-align: right ; font-size: 12pt'>{{ row['Recall'] }}</td>
+    	 <td style='text-align: right ; font-size: 12pt'>{{ row['F1score'] }}</td>
+       </tr>
+      {% endfor %}
+      </tbody>
+     </table>
+     {% endif %}
+     
+     {% if results_df %}
+       {{ results_df|safe }}
+     {% endif %}
+     
+     {% if total['best_score'] %}
+     <p><span>Miglior risultato raggiunto al ciclo: <b style="color:red">{{ total['best_score'] }}</b> con accuratezza max: <b style="color:red">{{ total['Accuratezza max']}}</b> </span>
+     {% endif %}
+     
+	   {% if total %}
+     <h2 class="w3-text-teal">Risultato generale addestramento {{ total['modello'] }} (macro media)</h2>
+     <table border='1' class='dataframe'  id='idTable'> 
+     <thead><tr style='text-align: right;'><th style='font-size: 12pt'>Metriche</th><th  style='font-size: 12pt'>Valori</th></tr></thead>
+    <tbody> 
+    	 <tr>
+    	 	<td style="text-align: left ; font-size: 12pt"><b>Accuratezza media</b></td>
+    	 	<td style="text-align: right ; font-size: 12pt">{{ total['Accuratezza media'] }}</td>
+    	 </tr>
+    	 <tr>
+    	 	<td style="text-align: left ; font-size: 12pt"><b>Accuratezza deviazione std</b></td>
+    	 	<td style="text-align: right ; font-size: 12pt">{{ total['Accuratezza std'] }}</td>
+    	 </tr>
+    	 <tr>
+    	 	<td style="text-align: left ; font-size: 12pt"><b>Accuratezza max</b></td>
+    	 	<td style='text-align: right ; font-size: 12pt'>{{ total['Accuratezza max'] }}</td>
+    	 </tr>
+    	  <tr>
+    	 	<td style="text-align: left ; font-size: 12pt"><b>Precisione media</b></td>
+    	 	<td style='text-align: right ; font-size: 12pt'>{{ total['Precisione media'] }}</td>
+    	 </tr>
+    	 <tr> 
+    	 	<td style="text-align: left ; font-size: 12pt"><b>Recall media</b></td>
+    	 	<td style='text-align: right ; font-size: 12pt'>{{ total['Recall media'] }}</td>
+    	 </tr>
+    	 <tr>
+    	 	<td style="text-align: left ; font-size: 12pt"><b>F1score media</b></td>
+    	 	<td style='text-align: right ; font-size: 12pt'>{{ total['F1score media'] }}</td>
+    	 </tr>
+      </tbody>
+     </table>
+     {% endif %}
+     
+     {% if classes %}
+     <h2 class="w3-text-teal">Risultati per classe</h2>
+     <table border='1' class='dataframe'  id='idTable'> 
+     <thead><tr style="text-align: right;"><th style="font-size: 12pt;">Classe</th><th  style="font-size: 12pt;">Precisione</th><th  style="font-size: 12pt;">Recall</th><th  style="font-size: 12pt;">F1score</th></tr></thead>
+    <tbody> 
+     	{% for line in classes %}
+    		 <tr>
+    	 		<td style="text-align: right ; font-size: 12pt;">{{ line['Classe'] }}</td>
+    	 		<td style="text-align: right ; font-size: 12pt;">{{ line['Precisione'] }}</td> 
+    	 		<td style="text-align: right ; font-size: 12pt;">{{ line['Recall'] }}</td>
+    	 		<td style="text-align: right ; font-size: 12pt;">{{ line['F1score'] }}</td>
+    	 	</tr>
+      {% endfor %}
+     </tbody>
+     </table>
+     {% endif %}
+	    
+    </div>
+  </div>
+  {% endblock %}
