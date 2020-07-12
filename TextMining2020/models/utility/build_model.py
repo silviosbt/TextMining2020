@@ -26,7 +26,7 @@ from keras.models import Model, Sequential
 
 # CUSTOM Modules
 import main
-from config.websetting import *
+#from config.websetting import *
 
 def create_sklearn_modelSVC(random_state):
     model =svm.LinearSVC(C=10000,random_state=random_state)
@@ -71,7 +71,7 @@ def create_modelMLP2(tokenizer):
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
     return model
 
-def use_keras_modelMLP(X_train,y_train,X_test,y_test,model,k=1):
+def create_keras_modelMLP(X_train,y_train,X_test,y_test,model,k=1):
     # BUILD BAG OF WORDS TEXT RAPPRESENTATION WITH TF-IDF INDEX    
     tokenizer = Tokenizer()
     tokenizer.fit_on_texts(X_train)

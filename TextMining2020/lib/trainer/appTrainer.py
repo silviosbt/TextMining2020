@@ -53,19 +53,10 @@ def trainer():
         current_app.logger.debug('Generato json')
         #app.logger.debug(payload)
         # send request to API REST endpoint
-        current_app.logger.debug('Scelto modello da addestrare: %s', modello)
+        current_app.logger.debug('Invio rchiesta di elaborazione..')
         r = requests.post(API_REST_ML_TRAIN, json=payload).json()
-        
-        #if modello == 'MLP':
-        #    current_app.logger.debug('Scelto modello da addestrare: %s', modello)
-        #    r = requests.post(KERAS_REST_API_MLP_TRAIN, json=payload).json()
-        #elif modello == 'SVM':
-        #    current_app.logger.debug('Scelto modello da addestrare: %s', modello)
-        #    r = requests.post(KERAS_REST_API_SVM_TRAIN, json=payload).json()
-        #else:
-        #    current_app.logger.debug('Scelto modello da addestrare: %s', modello)
-        #    r = requests.post(KERAS_REST_API_CNN_TRAIN, json=payload).json()
-        
+        current_app.logger.debug('Ricevuti dati elaborati..')
+
         # ensure the request was sucessful
         if r["success"]:
             #app.logger.debug(r)
@@ -89,7 +80,7 @@ def trainer():
                 df = df.assign(Descrizione=pd.Series(macroTopic).values)
                 jsonclass=json.loads(df.to_json(orient='records'))
                 jsondtot={'best_score': int(mbest)+1, 'modello' : r['trained']['modello'],'Accuracy mean': r['trained']['Accuracy mean'], 'Accuracy std' : r['trained']['Accuracy std'], 'Accuracy max': r['trained']['Accuracy max'], 
-                          'Precisione mean': r['trained']['Precision mean'], 'Precision std' : r['trained']['Precision std'], 'Precision max': r['trained']['Precision max'], 
+                          'Precision mean': r['trained']['Precision mean'], 'Precision std' : r['trained']['Precision std'], 'Precision max': r['trained']['Precision max'], 
                           'Recall mean': r['trained']['Recall mean'],'Recall std' : r['trained']['Recall std'], 'Recall max': r['trained']['Recall max'],
                           'F1score mean': r['trained']['F1score mean'],'F1score std' : r['trained']['F1score std'], 'F1score max': r['trained']['F1score max']}
                 current_app.logger.debug(df)
@@ -99,18 +90,7 @@ def trainer():
             else:
                 jsonTime={'modello' : r['trained']['modello'],'time_elapsed': r['trained']['time_elapsed'],'output_dir': r['trained']['output_dir']}
                 return  render_template('score2.html', notResults=jsonTime)
-                
-                #k=range(len(r['trained']['Classe']))
-                #df=pd.DataFrame({'Classe': pd.Series(r['trained']['Classe'], index=k),'Precisione': pd.Series(r['trained']['PPV'], index=k), 'Recall': pd.Series(r['trained']['TPR'], index=k), 'F1score': pd.Series(r['trained']['Fmeasure'], index=k)})
-                #jsonclass={'Classe': r['trained']['Classe'], 'Precisione': r['trained']['PPV'], 'Recall': r['trained']['TPR'], 'F1score': r['trained']['Fmeasure']}
-                #df['Classe']=df.Classe.astype(int)
-                #df=df.sort_values(by=['Classe'] )
-                #df = df.assign(Descrizione=pd.Series(macroTopic).values)
-                #jsonclass=json.loads(df.to_json(orient='records'))
-                #jsondtot={'modello' : r['trained']['modello'],'Accuratezza media': r['trained']['Accuratezza media'], 'Accuratezza std' : r['trained']['Accuratezza std'], 'Accuratezza max': r['trained']['Accuratezza max'], 'Precisione media': r['trained']['Precisione media'], 'Recall media': r['trained']['Recall media'], 'F1score media': r['trained']['F1score media']}
-                #app.logger.debug(jsonclass)
-                #app.logger.debug(jsondtot)
-                #return  render_template('score.html',  classes=jsonclass, total=jsondtot)
+
         # otherwise, the request failed
         else:
             current_app.logger.debug("Request failed")

@@ -36,7 +36,7 @@ db = redis.StrictRedis(host=REDISDB, port=6379, db=0)
 db.flushall()
 
 # load configuration setting from file setting.cfg
-app.config.from_pyfile(os.path.join('.', 'config/setting2.cfg'), silent=True)
+app.config.from_pyfile(os.path.join('.', 'config/setting.cfg'), silent=True)
 BASE_DIR = app.config['BASE_DIR']
 TARGET = app.config['TARGET']
 #TARGET={"1": 0, "12": 1, "18": 2, "2": 3, "9": 4, "20": 5, "15": 6, "21": 7, "7": 8, "16": 9, "3": 10, "19": 11, "5": 12, "4": 13, "17": 14, "6": 15, "10": 16, "13": 17, "14": 18, "8": 19, "23": 20}

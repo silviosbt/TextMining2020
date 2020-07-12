@@ -11,7 +11,7 @@ from flask import Flask, render_template, flash, request, redirect, current_app,
 from werkzeug.utils import secure_filename
 from flask.logging import default_handler
 
-from config.websetting import *
+from config.websetting import ALLOWED_EXTENSIONS, UPLOAD_FOLDER, DOWNLOAD_FOLDER
 from lib.classifier.appClassifier import appClassifier
 from lib.trainer.appTrainer import appTrainer
 

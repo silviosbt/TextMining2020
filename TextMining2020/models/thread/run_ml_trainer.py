@@ -24,8 +24,7 @@ from sklearn.metrics import precision_recall_fscore_support, accuracy_score, con
 
 # CUSTOM Modules
 import main
-from config.websetting import *
-from models.utility.feature_selection import score_func
+from config.websetting import ML_TRAIN_QUEUE, SERVER_SLEEP
 from models.utility.pre_processing import preProcessing
 from models.utility.plot_confusion_matrix import plot_confusion_matrix
 from models.utility.build_model import create_sklearn_modelSVC
@@ -175,6 +174,9 @@ def ml_trainer():
                 print('entro nel blocco not analisi')
                 piperun, output_dir, set_model  =  selectModel(modello,filtro,stop_words,random_state)
                 
+                print('output directory: {}'.format(output_dir))
+                print('modello da addestrare: {}'.format(set_model))
+                
                 ### FIT MODEL
                 print('FIT PIPELINE')
                 piperun.fit(X_train, y_train)
@@ -276,23 +278,30 @@ def ml_trainer():
                 results_tfidf['RECALL']=results_tfidf.RECALL.astype(float)
                 results_tfidf['F1SCORE']=results_tfidf.F1SCORE.astype(float)
                 results_tfidf=results_tfidf.groupby('CLASSE', sort=False).mean().round(2)
-                
+                results_tfidf = results_tfidf.loc[:, ~results_tfidf.columns.str.contains('^Unnamed')]
                 results_tfidf=results_tfidf.assign(ordina=ordina)
                 results_tfidf['ordina']=results_tfidf.ordina.astype(int)
                 results_tfidf=results_tfidf.sort_values(by='ordina')
-                results_tfidf=results_tfidf.drop(['ordina'], axis=1)
+                #results_tfidf=results_tfidf.drop(['ordina'], axis=1)
                 
                 #print(results_tfidf.index.values)
-                dfclass={'Classe': results_tfidf.index.values.tolist(), 'PPV': results_tfidf['PRECISION'].tolist(), 'TPR': results_tfidf['RECALL'].tolist(), 'Fmeasure': results_tfidf['F1SCORE'].tolist()}
-
+                #dfclass={'Classe': results_tfidf.index.values.tolist(), 'PPV': results_tfidf['PRECISION'].tolist(), 'TPR': results_tfidf['RECALL'].tolist(), 
+                #         'Fmeasure': results_tfidf['F1SCORE'].tolist()}
+                dfclass={'Classe': results_tfidf['ordina'].tolist(), 'PPV': results_tfidf['PRECISION'].tolist(), 'TPR': results_tfidf['RECALL'].tolist(), 
+                         'Fmeasure': results_tfidf['F1SCORE'].tolist()}
+                
+                
                 df=pd.DataFrame()
                 ind=range(len(cvscores))
-                df=pd.DataFrame({'Accuracy' : pd.Series(cvscores, index = ind).round(1), 'Precision': pd.Series(prec_macro_scores, index=ind).round(1), 'Recall': pd.Series(recall_macro_scores, index=ind).round(1), 'F1score': pd.Series(fscore_macro_scores, index=ind).round(1)})
+                df=pd.DataFrame({'Accuracy' : pd.Series(cvscores, index = ind).round(1), 'Precision': pd.Series(prec_macro_scores, index=ind).round(1), 
+                                 'Recall': pd.Series(recall_macro_scores, index=ind).round(1), 'F1score': pd.Series(fscore_macro_scores, index=ind).round(1)})
                 dfdoc={'Accuratezza': df.Accuracy.tolist(), 'Precisione': df.Precision.tolist(), 'Recall': df.Recall.tolist(), 'F1score': df.F1score.tolist()}
                 #doc={'codice': documents['id'].tolist(), "testo": documents['testo'].tolist(), "classe": documents['cap_maj_master'].tolist()}
                 #df_accuratezza_scores.to_csv(os.path.join(foldpath,"accuratezza_"+modello+"_folds.csv"), encoding='utf-8' )
                 df=pd.DataFrame()
-                df=pd.DataFrame([[set_model, np.mean(cvscores).round(1),  np.std(cvscores).round(1), np.max(cvscores).round(1), np.mean(prec_macro_scores).round(1), np.mean(recall_macro_scores).round(1), np.mean(fscore_macro_scores).round(1)]], columns=['Modello','accuracy_mean','accuracy_std','accuracy_max','precision','recall','f1score'])
+                df=pd.DataFrame([[set_model, np.mean(cvscores).round(1),  np.std(cvscores).round(1), np.max(cvscores).round(1), np.mean(prec_macro_scores).round(1), 
+                                  np.mean(recall_macro_scores).round(1), np.mean(fscore_macro_scores).round(1)]], 
+                                  columns=['Modello','accuracy_mean','accuracy_std','accuracy_max','precision','recall','f1score'])
                 #dftotale={'modello': modello, 'Accuratezza media': df.accuracy_mean.value(), 'Accuratezza std': df.accuracy_std.value(), 'Accuratezza max': df.accuracy_max.value(), 'Precisione media': df.precision.value(), 'Recall media': df.recall.value(), 'F1score media': df.f1score.value()}
                 dftotale={'modello': set_model, 'Accuracy mean': np.mean(cvscores).round(1),  'Accuracy std': np.std(cvscores).round(1), 'Accuracy max':  np.max(cvscores).round(1), \
                           'Precision mean': np.mean(prec_macro_scores).round(1), 'Precision std': np.std(prec_macro_scores).round(1), 'Precision max': np.max(prec_macro_scores).round(1), \

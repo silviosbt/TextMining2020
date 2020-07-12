@@ -19,7 +19,7 @@
 	<h1 class="w3-text-teal">Risultato:</h1>
      <p>
      {% if results %}
-     <h2 class="w3-text-teal">Risultati KFold Cross Validation Stratificata (macro media)</h2>
+     <h2 class="w3-text-teal">Risultati KFold Cross Validation Stratificata (media pesata)</h2>
      <table border='1' class='dataframe'  id='idTable'> 
      <thead><tr style='text-align: right'><th style='font-size: 12pt'>Fold</th><th  style='font-size: 12pt'>Accuratezza</th><th  style='font-size: 12pt'>Precisione</th><th  style='font-size: 12pt'>Recall</th><th  style='font-size: 12pt'>F1score</th></tr></thead>
     <tbody> 
@@ -41,7 +41,7 @@
      {% endif %}
      
      {% if total['best_score'] %}
-     <p><span style="font-size: 12pt;">Miglior risultato raggiunto al ciclo: <b style="color:red">{{ total['best_score'] }}</b> con accuratezza max: <b style="color:red">{{ total['Accuratezza max']}}</b> <input type="button" onclick="document.location.href='index.html';" value="Download"> </span>
+     <p><span style="font-size: 12pt;">Miglior risultato raggiunto al ciclo: <b style="color:red">{{ total['best_score'] }}</b> con F1 score max: <b style="color:red">{{ total['F1score max']}}</b></span>
      {% endif %}
      
 	   {% if total %}
