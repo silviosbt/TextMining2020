@@ -1,6 +1,8 @@
 # TextMining2020
 New repository for text mining analysis
 
+## BOW_SVM: performance scores on experimental dataset
+
 | Code            | Macro Topics                                      | Precision      | Recall         | F1-measure     |
 |-----------------|---------------------------------------------------|----------------|----------------|----------------|
 | 1               | Domestic Macroeconomic Issues                     | 0.57 (+/-0.06) | 0.64 (+/-0.06) | 0.59 (+/-0.06) |
@@ -25,9 +27,9 @@ New repository for text mining analysis
 | 21              | Public Lands and Water Management                 | 0.73 (+/-0.17) | 0.58 (+/-0.17) | 0.64 (+/-0.15) |
 | 23              | Cultural Policy Issues                            | 0.76 (+/-0.38) | 0.4 (+/-0.3)   | 0.5 (+/-0.3)   |
 
-## BOW_CNB_20000 performance scores on test dataset
+## BOW_CNB_20000: performance scores on test dataset
 
-| **{\bf Code}** | **{\bf Macro Topics}**                            | **{\bf Precision}** | **{\bf Recall}** | **{\bf F1}** | **{\bf Supp.}** |
+| Code           | Macro Topics                                      | Precision           | Recall           | F1-measure   | Supp            |
 |----------------|---------------------------------------------------|---------------------|------------------|--------------|-----------------|
 | 1              | Domestic Microeconomic Issues                     | 0\.58               | 0\.65            | 0\.61        | 17              |
 | 2              | Civil Right, Minority Issues, and Civil Liberties | 1\.0                | 0\.5             | 0\.67        | 4               |
