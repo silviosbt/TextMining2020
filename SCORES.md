@@ -30,27 +30,28 @@ New repository for text mining analysis
 
 ## BOW_CNB_20000: performance scores on test dataset
 
-| Code           | Macro Topics                                      | Precision           | Recall           | F1-measure   | Supp            |
-|----------------|---------------------------------------------------|---------------------|------------------|--------------|-----------------|
-| 1              | Domestic Microeconomic Issues                     | 0\.58               | 0\.65            | 0\.61        | 17              |
-| 2              | Civil Right, Minority Issues, and Civil Liberties | 1\.0                | 0\.5             | 0\.67        | 4               |
-| 3              | Health                                            | 0\.79               | 1\.0             | 0\.88        | 15              |
-| 4              | Agriculture                                       | 0\.71               | 0\.83            | 0\.77        | 6               |
-| 5              | Labour and Employment                             | 0\.57               | 1\.0             | 0\.73        | 4               |
-| 6              | Education                                         | 1\.0                | 1\.0             | 1\.0         | 13              |
-| 7              | Environment                                       | 0\.62               | 0\.71            | 0\.67        | 14              |
-| 8              | Energy                                            | 0\.67               | 1\.0             | 0\.8         | 2               |
-| 9              | Immigration                                       | 0\.73               | 1\.0             | 0\.84        | 8               |
-| 10             | Transportation                                    | 0\.77               | 0\.91            | 0\.83        | 33              |
-| 12             | Low and Crime                                     | 0\.83               | 0\.96            | 0\.89        | 25              |
-| 13             | Welfare                                           | 1\.0                | 0\.4             | 0\.57        | 5               |
-| 14             | C\. Development and Housing Issue                 | 0\.0                | 0\.0             | 0\.0         | 4               |
-| 15             | Banking, Finance, and Domestic Commerce           | 0\.47               | 0\.47            | 0\.47        | 15              |
-| 16             | Defence                                           | 1\.0                | 0\.5             | 0\.67        | 2               |
-| 17             | Space, Science, Technology, and Communications    | 1\.0                | 1\.0             | 1\.0         | 1               |
-| 18             | Foreign Trade                                     | 1\.0                | 0\.25            | 0\.4         | 4               |
-| 19             | International Affairs                             | 0\.77               | 0\.71            | 0\.74        | 14              |
-| 20             | Government Operations                             | 0\.74               | 0\.45            | 0\.56        | 31              |
-| 21             | Public Lands and Water Management                 | 0\.25               | 1\.0             | 0\.4         | 1               |
-| 23             | Cultural Policy Issues                            | 1\.0                | 0\.25            | 0\.4         | 4               |
+| Code | Macro Categories                                  | Precision | Recall | F1\-measure | Count |
+|------|---------------------------------------------------|-----------|--------|-------------|-------|
+| 1    | Domestic Microeconomic Issues                     | 57\.9     | 64\.7  | 61\.1       | 17    |
+| 2    | Civil Right, Minority Issues, and Civil Liberties | 100\.0    | 50\.0  | 66\.7       | 4     |
+| 3    | Health                                            | 78\.9     | 100\.0 | 88\.2       | 15    |
+| 4    | Agriculture                                       | 71\.40    | 83\.3  | 76\.9       | 6     |
+| 5    | Labour and Employment                             | 57\.1     | 100\.0 | 72\.7       | 4     |
+| 6    | Education                                         | 100\.0    | 100\.0 | 100\.0      | 13    |
+| 7    | Environment                                       | 62\.5     | 71\.4  | 66\.7       | 14    |
+| 8    | Energy                                            | 66\.7     | 100\.0 | 80\.0       | 2     |
+| 9    | Immigration                                       | 72\.7     | 100\.0 | 84\.2       | 8     |
+| 10   | Transportation                                    | 76\.9     | 90\.9  | 83\.3       | 33    |
+| 12   | Low and Crime                                     | 82\.8     | 96\.0  | 88\.9       | 25    |
+| 13   | Welfare                                           | 100\.0    | 40\.0  | 57\.1       | 5     |
+| 14   | C\. Development and Housing Issue                 | 0\.0      | 0\.0   | 0\.0        | 4     |
+| 15   | Banking, Finance, and Domestic Commerce           | 46\.7     | 46\.7  | 46\.7       | 15    |
+| 16   | Defence                                           | 100\.0    | 50\.0  | 66\.7       | 2     |
+| 17   | Space, Science, Technology, and Communications    | 100\.0    | 100\.0 | 100\.0      | 1     |
+| 18   | Foreign Trade                                     | 100\.0    | 25\.0  | 40\.0       | 4     |
+| 19   | International Affairs                             | 76\.9     | 71\.4  | 74\.1       | 14    |
+| 20   | Government Operations                             | 73\.7     | 45\.2  | 56\.0       | 31    |
+| 21   | Public Lands and Water Management                 | 25\.0     | 100\.0 | 40\.0       | 1     |
+| 23   | Cultural Policy Issues                            | 100\.0    | 25\.0  | 40\.0       | 4     |
+
 
