@@ -1,7 +1,7 @@
 # TextMining2020
 New repository for text mining analysis
 
-## BOW_SVM: performance scores on experimental dataset
+## BOW_CNB_20000: performance scores on experimental dataset
 
 | code | Macro topic                                       | Precision            | Recall               | F1\-measure          |
 |------|---------------------------------------------------|----------------------|----------------------|----------------------|
