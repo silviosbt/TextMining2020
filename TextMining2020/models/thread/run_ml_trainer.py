@@ -34,16 +34,16 @@ from models.utility.build_model import create_sklearn_modelMLP
 
 
 def selectModel(modello,filtro,stop_words,random_state):
-    EMBEDDING=modello
+    MODEL=modello
     FEATURE_SELECTION=filtro
     STOP_WORDS=stop_words
     score_func=mutual_info_classif
     ### SET MODELs, INPUT SHAPE and OUTPUT DIRECTORY 
-    if EMBEDDING=='BOW_SVM' or EMBEDDING=='BOW_{}_SVM'.format(main.MAX_WORDS):
+    if MODEL=='BOW_SVM' or MODEL=='BOW_{}_SVM'.format(main.MAX_WORDS):
         model = create_sklearn_modelSVC(random_state)
         if FEATURE_SELECTION == 'True':
-            EMBEDDING='BOW_{}_SVM'.format(main.MAX_WORDS)
-            OUTPUT_DIR=os.path.join(main.BASE_DIR, EMBEDDING)
+            MODEL='BOW_{}_SVM'.format(main.MAX_WORDS)
+            OUTPUT_DIR=os.path.join(main.BASE_DIR, MODEL)
             # create path for results save
             if not os.path.exists(OUTPUT_DIR):
                 os.makedirs(OUTPUT_DIR)
@@ -53,7 +53,7 @@ def selectModel(modello,filtro,stop_words,random_state):
             # SET PIPELINE
             pipe = Pipeline([('cvectorizer',cvectorizer),('kbestselect',kbestselect),('model', model)])
         else:
-            OUTPUT_DIR=os.path.join(main.BASE_DIR, EMBEDDING)
+            OUTPUT_DIR=os.path.join(main.BASE_DIR, MODEL)
             # create path for results save
             if not os.path.exists(OUTPUT_DIR):
                 os.makedirs(OUTPUT_DIR)
@@ -61,11 +61,11 @@ def selectModel(modello,filtro,stop_words,random_state):
             vectorizer = TfidfVectorizer(lowercase=True, analyzer = 'word',  decode_error='replace' , encoding='utf-8', stop_words=STOP_WORDS)
             # SET PIPELINE
             pipe = Pipeline([('tfidf',vectorizer),('model', model)])
-    elif EMBEDDING=='BOW_CNB' or EMBEDDING=='BOW_{}_CNB'.format(main.MAX_WORDS):
+    elif MODEL=='BOW_CNB' or MODEL=='BOW_{}_CNB'.format(main.MAX_WORDS):
         model = create_sklearn_modelCNB(random_state)
         if FEATURE_SELECTION == 'True':
-            EMBEDDING='BOW_{}_CNB'.format(main.MAX_WORDS)
-            OUTPUT_DIR=os.path.join(main.BASE_DIR, EMBEDDING)
+            MODEL='BOW_{}_CNB'.format(main.MAX_WORDS)
+            OUTPUT_DIR=os.path.join(main.BASE_DIR, MODEL)
             # create path for results save
             if not os.path.exists(OUTPUT_DIR):
                 os.makedirs(OUTPUT_DIR)
@@ -75,7 +75,7 @@ def selectModel(modello,filtro,stop_words,random_state):
             # SET PIPELINE
             pipe = Pipeline([('cvectorizer',cvectorizer),('kbestselect',kbestselect),('model', model)])
         else:
-            OUTPUT_DIR=os.path.join(main.BASE_DIR, EMBEDDING)
+            OUTPUT_DIR=os.path.join(main.BASE_DIR, MODEL)
             # create path for results save
             if not os.path.exists(OUTPUT_DIR):
                 os.makedirs(OUTPUT_DIR)
@@ -83,12 +83,12 @@ def selectModel(modello,filtro,stop_words,random_state):
             vectorizer = TfidfVectorizer(lowercase=True, analyzer = 'word',  decode_error='replace' , encoding='utf-8', stop_words=STOP_WORDS)
             # SET PIPELINE
             pipe = Pipeline([('tfidf',vectorizer),('model', model)])
-    elif EMBEDDING=='BOW_PAC' or EMBEDDING=='BOW_{}_PAC'.format(main.MAX_WORDS):
+    elif MODEL=='BOW_PAC' or MODEL=='BOW_{}_PAC'.format(main.MAX_WORDS):
         model = create_sklearn_modelPAC(random_state)
         #model = PassiveAggressiveClassifier(C=0.001, max_iter=1000, random_state=random_state)
         if FEATURE_SELECTION == 'True':
-            EMBEDDING='BOW_{}_PAC'.format(main.MAX_WORDS)
-            OUTPUT_DIR=os.path.join(main.BASE_DIR, EMBEDDING)
+            MODEL='BOW_{}_PAC'.format(main.MAX_WORDS)
+            OUTPUT_DIR=os.path.join(main.BASE_DIR, MODEL)
             # Create path for results save
             if not os.path.exists(OUTPUT_DIR):
                 os.makedirs(OUTPUT_DIR)
@@ -98,7 +98,7 @@ def selectModel(modello,filtro,stop_words,random_state):
             # SET PIPELINE
             pipe = Pipeline([('cvectorizer',cvectorizer),('kbestselect',kbestselect),('model', model)])
         else:
-            OUTPUT_DIR=os.path.join(main.BASE_DIR, EMBEDDING)
+            OUTPUT_DIR=os.path.join(main.BASE_DIR, MODEL)
             # Create path for results save
             if not os.path.exists(OUTPUT_DIR):
                 os.makedirs(OUTPUT_DIR)
@@ -106,11 +106,11 @@ def selectModel(modello,filtro,stop_words,random_state):
             vectorizer = TfidfVectorizer(lowercase=True, analyzer = 'word',  decode_error='replace' , encoding='utf-8', stop_words=STOP_WORDS)
             # SET PIPELINE
             pipe = Pipeline([('tfidf',vectorizer),('model', model)])
-    elif EMBEDDING=='BOW_MLP' or EMBEDDING=='BOW_{}_MLP'.format(main.MAX_WORDS):
+    elif MODEL=='BOW_MLP' or MODEL=='BOW_{}_MLP'.format(main.MAX_WORDS):
         model=create_sklearn_modelMLP()
         if FEATURE_SELECTION == 'True':
-            EMBEDDING='BOW_{}_MLP'.format(main.MAX_WORDS)
-            OUTPUT_DIR=os.path.join(main.BASE_DIR, EMBEDDING)
+            MODEL='BOW_{}_MLP'.format(main.MAX_WORDS)
+            OUTPUT_DIR=os.path.join(main.BASE_DIR, MODEL)
             # Create path for results save
             if not os.path.exists(OUTPUT_DIR):
                 os.makedirs(OUTPUT_DIR)
@@ -120,7 +120,7 @@ def selectModel(modello,filtro,stop_words,random_state):
             # SET PIPELINE
             pipe = Pipeline([('cvectorizer',cvectorizer),('kbestselect',kbestselect),('model', model)])
         else:
-            OUTPUT_DIR=os.path.join(main.BASE_DIR, EMBEDDING)
+            OUTPUT_DIR=os.path.join(main.BASE_DIR, MODEL)
             # Create path for results save
             if not os.path.exists(OUTPUT_DIR):
                 os.makedirs(OUTPUT_DIR)
@@ -129,7 +129,7 @@ def selectModel(modello,filtro,stop_words,random_state):
             # SET PIPELINE
             pipe = Pipeline([('tfidf',vectorizer),('model', model)])   
     
-    return pipe, OUTPUT_DIR, EMBEDDING
+    return pipe, OUTPUT_DIR, MODEL
 
 
 # Machine Learning models training
@@ -268,7 +268,7 @@ def ml_trainer():
                     np.set_printoptions(precision=2)
                     #Plot non-normalized confusion matrix
                     plt.figure(6)
-                    plot_confusion_matrix(cm_tot.astype(int), classes=ordina, output=output_dir, title='Confusion matrix')    
+                    plot_confusion_matrix(cm_tot.astype(int), classes=ordina, output=output_dir)    
             
                 dfdoc={}        
                 dftotale={}

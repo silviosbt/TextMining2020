@@ -11,10 +11,10 @@ import os, sys, codecs, time, re
 import pandas as pd
 import numpy as np
 np.set_printoptions(threshold=sys.maxsize)
-import itertools
 from operator import itemgetter
 import pickle
 import matplotlib.pyplot as plt
+import seaborn as sn
 from nltk.corpus import stopwords
 # import sklearn libreries
 from sklearn import svm
@@ -35,9 +35,9 @@ from keras.layers import Conv1D, MaxPooling1D, Embedding
 from keras.models import Model, Sequential
 
 # CUSTOM Module
-from models.utility.cmaps import cmaps 
-cmaps=cmaps()
-Blues=cmaps.Blues
+# from models.utility.cmaps import cmaps 
+# cmaps=cmaps()
+# Blues=cmaps.Blues
 
 
 def create_labels_dict(items):
@@ -48,39 +48,16 @@ def create_labels_dict(items):
     labels=items.apply(lambda x:dic[x])
     return dic, labels
 
-def plot_confusion_matrix(cmt, classes, normalize=False, title='Confusion matrix', cmap=Blues):
-    """
-    This function prints and plots the confusion matrix.
-    Normalization can be applied by setting `normalize=True`.
-    """
-    if normalize:
-        cmt = cmt.astype('float') / cmt.sum(axis=1)[:, np.newaxis]
-        print("Normalized confusion matrix")
-    else:
-        print('Confusion matrix, without normalization')
-
-    #print(cm)
-
-    plt.imshow(cmt, interpolation='nearest', cmap=cmap)
-    plt.title(title)
-    plt.colorbar()
-    tick_marks = np.arange(len(classes))
-    plt.xticks(tick_marks, classes)
-    #plt.xticks(tick_marks, classes, rotation=45)
-    plt.yticks(tick_marks, classes)
-
-    fmt = '.2f' if normalize else 'd'
-    thresh = cmt.max() / 2.
-    for i, w in itertools.product(range(cmt.shape[0]), range(cmt.shape[1])):
-        plt.text(w, i, format(cmt[i, w], fmt),
-                 horizontalalignment="center",
-                 color="white" if cmt[i, w] > thresh else "black")
-
-    plt.ylabel('True labels')
-    plt.xlabel('Predicted labels')
-    plt.tight_layout()
+    
+def plot_confusion_matrix(data,labels,foldpath):
+    df_cm = pd.DataFrame(data, columns=labels, index = labels)
+    df_cm.index.name = 'Actual'
+    df_cm.columns.name = 'Predicted'
+    plt.figure(figsize = (10,7))
+    sn.set(font_scale=1.0)#for label size
+    sn.heatmap(df_cm, cmap="Blues", annot=True,annot_kws={"size": 16})
     plotsave=os.path.join(foldpath,"confusion_matrix.{}".format(EXT) )
-    plt.savefig(plotsave ,format=EXT, dpi=1000, bbox_inches='tight')    
+    plt.savefig(plotsave ,format=EXT) #dpi=1000, bbox_inches='tight')
     #plt.show()
     plt.close(6)
     
@@ -179,49 +156,49 @@ def create_modelMLP2():
     return model
 
 def use_keras_modelMLP():
-            # BUILD BAG OF WORDS TEXT RAPPRESENTATION WITH TF-IDF INDEX    
-            tokenizer = Tokenizer()
-            tokenizer.fit_on_texts(X_train)
-            X_train = tokenizer.texts_to_matrix(X_train, mode='tfidf')
-            X_test = tokenizer.texts_to_matrix(X_test, mode='tfidf')
-            y_train = to_categorical(y_train, num_classes=NCLASSI)
-            y_test = to_categorical(y_test, num_classes=NCLASSI)
-            print(y_test)
-            print(type(y_test))
-            #vocab_size = len(tokenizer.word_index)+1
-            #num_classes=y_train.shape[1]
-            print("Numero di classi:", y_train.shape[1])
-            print('Shape of X train and X validation tensor:', X_train.shape,X_test.shape)
-            print('Shape of label train and validation tensor:', y_train.shape,y_test.shape)
-            print("-------")
+    # BUILD BAG OF WORDS TEXT RAPPRESENTATION WITH TF-IDF INDEX    
+    tokenizer = Tokenizer()
+    tokenizer.fit_on_texts(X_train)
+    X_train = tokenizer.texts_to_matrix(X_train, mode='tfidf')
+    X_test = tokenizer.texts_to_matrix(X_test, mode='tfidf')
+    y_train = to_categorical(y_train, num_classes=NCLASSI)
+    y_test = to_categorical(y_test, num_classes=NCLASSI)
+    print(y_test)
+    print(type(y_test))
+    #vocab_size = len(tokenizer.word_index)+1
+    #num_classes=y_train.shape[1]
+    print("Numero di classi:", y_train.shape[1])
+    print('Shape of X train and X validation tensor:', X_train.shape,X_test.shape)
+    print('Shape of label train and validation tensor:', y_train.shape,y_test.shape)
+    print("-------")
     
-            # create fold path for results save
-            foldpath=os.path.join(OUTPUT_DIR, "fold" + str(k))
-            if not os.path.exists(foldpath):
-                os.makedirs(foldpath)
+    # create fold path for results save
+    foldpath=os.path.join(OUTPUT_DIR, "fold" + str(k))
+    if not os.path.exists(foldpath):
+        os.makedirs(foldpath)
     
-            #save tokenizer
-            with open(os.path.join(foldpath,"tokenizer_fold"+str(k)+"_"+EMBEDDING+".pickle"), 'wb') as handle:
-                pickle.dump(tokenizer,handle, protocol=pickle.HIGHEST_PROTOCOL)
+    #save tokenizer
+    with open(os.path.join(foldpath,"tokenizer_fold"+str(k)+"_"+EMBEDDING+".pickle"), 'wb') as handle:
+        pickle.dump(tokenizer,handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-            # Create callbacks
-            name_weights = os.path.join(foldpath, "model_fold" + str(k) + "_"+EMBEDDING+".hdf5")
-            checkpointer = ModelCheckpoint(filepath=name_weights,  verbose=2, save_best_only=True)
-            early_stopping = EarlyStopping(monitor='val_loss', min_delta=0.01, patience=4, verbose=1)
-            callbacks_list = [early_stopping,checkpointer]
+    # Create callbacks
+    name_weights = os.path.join(foldpath, "model_fold" + str(k) + "_"+EMBEDDING+".hdf5")
+    checkpointer = ModelCheckpoint(filepath=name_weights,  verbose=2, save_best_only=True)
+    early_stopping = EarlyStopping(monitor='val_loss', min_delta=0.01, patience=4, verbose=1)
+    callbacks_list = [early_stopping,checkpointer]
     
-            # genero il modello
-            if MODELLOMLP==1:
-                model = create_modelMLP1()
-            else:
-                model = create_modelMLP2()
+    # genero il modello
+    if MODELLOMLP==1:
+        model = create_modelMLP1()
+    else:
+        model = create_modelMLP2()
 
-            # fit network
-            #history=model.fit(X_train, y_train, batch_size=BATCH, validation_data=(X_test, y_test), callbacks=callbacks_list, epochs=EPOCHS, verbose=VERBOSE_FIT)
-            history = model.fit(X_train, y_train, batch_size=BATCH, epochs=EPOCHS, verbose=VERBOSE_FIT, callbacks=callbacks_list, validation_split=VALIDATION_SPLIT)
+    # fit network
+    #history=model.fit(X_train, y_train, batch_size=BATCH, validation_data=(X_test, y_test), callbacks=callbacks_list, epochs=EPOCHS, verbose=VERBOSE_FIT)
+    history = model.fit(X_train, y_train, batch_size=BATCH, epochs=EPOCHS, verbose=VERBOSE_FIT, callbacks=callbacks_list, validation_split=VALIDATION_SPLIT)
             
-            print("Validation Loss: %.2f%%  (+/- %.2f%%)" % (np.mean(history.history['val_loss']), np.std(history.history['val_loss'])))
-            print("Validation Accuracy: %.2f%%  (+/- %.2f%%)" % (np.mean(history.history['accuracy']), np.std(history.history['accuracy'])))
+    print("Validation Loss: %.2f%%  (+/- %.2f%%)" % (np.mean(history.history['val_loss']), np.std(history.history['val_loss'])))
+    print("Validation Accuracy: %.2f%%  (+/- %.2f%%)" % (np.mean(history.history['accuracy']), np.std(history.history['accuracy'])))
 
 
 
@@ -277,7 +254,7 @@ def create_model():
 ###########################  INZIO ELABORAZIONE ################################
 
 #EMBEDDING= sys.argv[1]
-EMBEDDING="BOW_MLP"
+EMBEDDING="BOW_CNB"
 #BASE_DIR = '/home/silvio/datasets'
 BASE_DIR = r'C:\\datasets'
 DATASET=r'cap_qt_leg13_17.xlsx'
@@ -339,7 +316,7 @@ data_corpus=documents.testo
 print('--------')
 
 print('print unique labels:', documents['cap_maj_master'].unique())
-ordina=documents['cap_maj_master'].unique()
+ordina=documents['cap_maj_master'].unique().astype(int)
 class_dic, labels=create_labels_dict(documents['cap_maj_master'].astype(int))
 labels=np.asarray(labels)
 #ordina=[1, 12, 18, 2, 9, 20, 15, 21, 7, 16, 3, 19, 5, 4, 17, 6, 10, 13, 14, 8, 23]
@@ -638,7 +615,7 @@ if PLOT_CM=='True':
     np.set_printoptions(precision=2)
     #Plot non-normalized confusion matrix
     plt.figure(6)
-    plot_confusion_matrix(cm_tot.astype(int), classes=ordina,  title='Confusion matrix')    
+    plot_confusion_matrix(cm_tot.astype(int), ordina, foldpath)    
 
 ## RISULTATI OTTENUTI PER OGNI CLASSE IN CROSS VALIDATION (MEDIA E DEVIAZIONE STANDARD)
 results_tfidf['CLASSE']=results_tfidf.CLASSE.astype(str)
