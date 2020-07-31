@@ -1,7 +1,7 @@
 # Text Mining Performance Scores
 Experimetal and test performance scores from text mining analysis
 
-[FastText_LSTM performance scores](##fasttext_lstm:performance-scores-on-experimental-dataset)
+[FastText_LSTM performance scores](##fasttext_lstm)
 
 ## BOW_CNB_20000: performance scores on experimental dataset
 
