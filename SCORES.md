@@ -4,24 +4,24 @@ Experimetal and test performance scores from text mining analysis
 ## Summary
 
 ### Train Dataset
-* [BOW_SVM](## BOW_SVM: performance scores on train dataset)
-* [BOW_CNB](## BOW_CNB: performance scores on train dataset)
-* [BOW_PAC](## BOW_PAC: performance scores on train dataset)
-* [BOW_MLP](## BOW_MLP: performance scores on train dataset)
-* [BOW_SVM_20000](## BOW_SVM_20000: performance scores on train dataset)
-* [BOW_CNB_20000](## BOW_CNB_20000: performance scores on train dataset)
-* [BOW_PAC_20000](## BOW_PAC_20000: performance scores on train dataset)
-* [BOW_MLP_20000](## BOW_MLP_20000: performance scores on train dataset)
+* [BOW_SVM](##BOW_SVM: performance scores on train dataset)
+* [BOW_CNB](##BOW_CNB: performance scores on train dataset)
+* [BOW_PAC](##BOW_PAC: performance scores on train dataset)
+* [BOW_MLP](##BOW_MLP: performance scores on train dataset)
+* [BOW_SVM_20000](##BOW_SVM_20000: performance scores on train dataset)
+* [BOW_CNB_20000](##BOW_CNB_20000: performance scores on train dataset)
+* [BOW_PAC_20000](##BOW_PAC_20000: performance scores on train dataset)
+* [BOW_MLP_20000](##BOW_MLP_20000: performance scores on train dataset)
 
 ### Test Dataset
-* [BOW_SVM](## BOW_SVM: performance scores on test dataset)
-* [BOW_CNB](## BOW_CNB: performance scores on test dataset)
-* [BOW_PAC](## BOW_PAC: performance scores on test dataset)
-* [BOW_MLP](## BOW_MLP: performance scores on test dataset)
-* [BOW_SVM_20000](## BOW_SVM_20000: performance scores on test dataset)
-* [BOW_CNB_20000](## BOW_CNB_20000: performance scores on test dataset)
-* [BOW_PAC_20000](## BOW_PAC_20000: performance scores on test dataset)
-* [BOW_MLP_20000](## BOW_MLP_20000: performance scores on test dataset)
+* [BOW_SVM](##BOW_SVM: performance scores on test dataset)
+* [BOW_CNB](##BOW_CNB: performance scores on test dataset)
+* [BOW_PAC](##BOW_PAC: performance scores on test dataset)
+* [BOW_MLP](##BOW_MLP: performance scores on test dataset)
+* [BOW_SVM_20000](##BOW_SVM_20000: performance scores on test dataset)
+* [BOW_CNB_20000](##BOW_CNB_20000: performance scores on test dataset)
+* [BOW_PAC_20000](##BOW_PAC_20000: performance scores on test dataset)
+* [BOW_MLP_20000](##BOW_MLP_20000: performance scores on test dataset)
 
 ## BOW_CNB_20000: performance scores on experimental dataset
 
