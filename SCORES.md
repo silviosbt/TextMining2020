@@ -1,6 +1,9 @@
 # Text Mining Performance Scores
 Experimetal and test performance scores from text mining analysis
 
+## Summary
+* [BOW_CNB_20000](##BOW_CNB_20000)
+
 ## BOW_CNB_20000: performance scores on experimental dataset
 
 | code | Macro topic                                       | Precision            | Recall               | F1\-measure          |
