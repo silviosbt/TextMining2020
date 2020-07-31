@@ -2,7 +2,23 @@
 Experimetal and test performance scores from text mining analysis
 
 ## Summary
-* [](##BOW_CNB_20000)
+* [BOW_CNB_20000](##BOW_CNB_20000)
+* [BOW_SVM](##BOW_SVM)
+* [BOW_CNB](##BOW_CNB)
+* [BOW_PAC](##BOW_PAC)
+* [BOW_MLP](##BOW_MLP)
+* [BOW_SVM_20000](##BOW_SVM_20000)
+* [BOW_PAC_20000](##BOW_PAC_20000)
+* [BOW_MLP_20000](##BOW_MLP_20000)
+* [](##)
+* [](##)
+* [](##)
+* [](##)
+* [](##)
+* [](##)
+* [](##)
+* [](##)
+* [](##)
 
 ## BOW_CNB_20000: performance scores on experimental dataset
 
