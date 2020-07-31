@@ -1,7 +1,7 @@
 # Text Mining Performance Scores
 Experimetal and test performance scores from text mining analysis
 
-[FastText_LSTM performance scores](##fasttext_lstm:-performance-scores-on-experimental-dataset)
+[FastText_LSTM performance scores](##fasttext_lstm-performance-scores-on-experimental-dataset)
 
 ## BOW_CNB_20000: performance scores on experimental dataset
 
@@ -292,7 +292,7 @@ Experimetal and test performance scores from text mining analysis
 | 21   | Public Lands and Water Management                 | 0\.6 \(\+/\-0\.18\)  | 0\.53 \(\+/\-0\.2\)  | 0\.54 \(\+/\-0\.16\) |
 | 23   | Cultural Policy Issues                            | 0\.0 \(\+/\-0\.0\)   | 0\.0 \(\+/\-0\.0\)   | 0\.0 \(\+/\-0\.0\)   |
 
-## FastText_LSTM: performance scores on experimental dataset
+## FastText_LSTM performance scores on experimental dataset
 
 | Code | Macro Topics                                      | Precision            | Recall               | F1\-measure          |
 |------|---------------------------------------------------|----------------------|----------------------|----------------------|
