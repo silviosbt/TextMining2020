@@ -1,5 +1,5 @@
 # Text Mining Performance Scores
-Experimetal performance scores from text mining analysis
+Experimetal and test performance scores from text mining analysis
 
 [FastText_LSTM performance scores](## FastText_LSTM: performance scores on experimental dataset)
 
@@ -317,3 +317,7 @@ Experimetal performance scores from text mining analysis
 | 20   | Government Operations                             | 0\.54 \(\+/\-0\.07\) | 0\.56 \(\+/\-0\.07\) | 0\.55 \(\+/\-0\.05\) |
 | 21   | Public Lands and Water Management                 | 0\.55 \(\+/\-0\.11\) | 0\.6 \(\+/\-0\.19\)  | 0\.56 \(\+/\-0\.12\) |
 | 23   | Cultural Policy Issues                            | 0\.0 \(\+/\-0\.0\)   | 0\.0 \(\+/\-0\.0\)   | 0\.0 \(\+/\-0\.0\)   |
+
+
+
+
