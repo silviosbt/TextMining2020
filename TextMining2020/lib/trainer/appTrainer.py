@@ -23,18 +23,18 @@ def trainer():
         analisi=request.form.get('stratifiedCV') 
         kfold=request.form.get('kfold')
         modello=request.form.get('trainer')
-        current_app.logger.debug("inserito file: %s", filepath)
-        current_app.logger.debug("scelto filtro: %s", filtro)
-        current_app.logger.debug("scelto analisi: %s", analisi)
-        current_app.logger.debug("scelto numero fold: %s" , kfold)
-        current_app.logger.debug("scelto modello: %s", modello)
+        current_app.logger.debug("File selected: %s", filepath)
+        current_app.logger.debug("Filtro entered: %s", filtro)
+        current_app.logger.debug("Analysis entered: %s", analisi)
+        current_app.logger.debug("Fold number entered: %s" , kfold)
+        current_app.logger.debug("Model selected: %s", modello)
         list_doc=[]
         list_label=[]
         if not  filepath:
-            flash('Attenzione non sono stati caricati dati da classificare' , 'warning')
-            current_app.logger.debug('Attenzione non sono stati caricati dati da addestrare')
+            flash('Warning: no data uploaded for training' , 'warning')
+            current_app.logger.debug('Warning: no data uploaded for training')
             return redirect(url_for('train'))
-        current_app.logger.debug('Presente file per addestramento modello')
+        current_app.logger.debug('Uploaded file for training model')
         filepath=os.path.join(UPLOAD_FOLDER, filepath)
         if filepath.lower().endswith(('.xls', '.xlsx')):
             #xl = pd.ExcelFile(filepath, encoding='utf-8')
@@ -53,29 +53,27 @@ def trainer():
         current_app.logger.debug('Generato json')
         #app.logger.debug(payload)
         # send request to API REST endpoint
-        current_app.logger.debug('Invio rchiesta di elaborazione..')
+        current_app.logger.debug('Start training job..')
         r = requests.post(API_REST_ML_TRAIN, json=payload).json()
-        current_app.logger.debug('Ricevuti dati elaborati..')
+        current_app.logger.debug('labeled data received..')
 
         # ensure the request was sucessful
         if r["success"]:
             #app.logger.debug(r)
             #return  render_template('trainer.html')
             if  analisi:
-                current_app.logger.debug('Analisi kfold cross validation abilitata')
+                current_app.logger.debug('Stratified kfold cross validation analysis enabled')
                 i=range(int(kfold)*2)
                 a=[x+1 for x in i]
                 df=pd.DataFrame({'Fold': pd.Series(a, index=i),'Accuratezza' : pd.Series(r['trained']['Accuratezza'], index = i), 'Precisione': pd.Series(r['trained']['Precisione'], index = i), 
                                  'Recall': pd.Series(r['trained']['Recall'], index = i), 'F1score' : pd.Series(r['trained']['F1score'], index = i)})
                 mbest=df['F1score'].idxmax(axis=0, skipna=True)
-                current_app.logger.debug('Modello migliore %d', mbest)
+                current_app.logger.debug('Best Model %d', mbest)
                 jsondf=json.loads(df.to_json(orient='records'))
                 k=range(len(r['trained']['Classe']))
                 df=pd.DataFrame({'Classe': pd.Series(r['trained']['Classe'], index=k),'Precisione': pd.Series(r['trained']['PPV'], index=k), 'Recall': pd.Series(r['trained']['TPR'], index=k), 
                                  'F1score': pd.Series(r['trained']['Fmeasure'], index=k)})
                 jsonclass={'Classe': r['trained']['Classe'], 'Precisione': r['trained']['PPV'], 'Recall': r['trained']['TPR'], 'F1score': r['trained']['Fmeasure']}
-                #df['Classe']=df.Classe.astype(int)
-                #df=df.sort_values(by=['Classe'] )
                 
                 df = df.assign(Descrizione=pd.Series(macroTopic).values)
                 jsonclass=json.loads(df.to_json(orient='records'))

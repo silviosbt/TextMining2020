@@ -1,9 +1,9 @@
 '''
 Created on 05 lug 2020
 
-@author: Utente
+@author: Silvio Fabi
 '''
-import os, time, json
+import time, json
 import main
 
 def runModel(model, queue, target_names):
@@ -15,7 +15,7 @@ def runModel(model, queue, target_names):
         q = main.db.lpop(QUEUE)
         if q is not None:
             #for q in queue:
-            print('valore di q:',q)
+            print('q value:',q)
             #deserialize the object for get the data
             q=json.loads(q.decode("utf-8"))
             #print(type(qq))
@@ -30,7 +30,7 @@ def runModel(model, queue, target_names):
             for x_t in y_pred:
                 #prediction = model_svm.predict(x_t)
                 predicted_label=target_names[x_t]
-                print('Identificativo documento: {} -- Predicted label: {}'.format(codice[i], predicted_label))
+                print('ID Document: {} -- Predicted label: {}'.format(codice[i], predicted_label))
                 r = {"did": codice[i], "testo": documents[i], "classe": str(predicted_label)}
                 output.append(r)
                 #print('Identificativo documento: {} -- Actual label: {} -- Predicted label: {}'.format(code[i], labels[i], target_names[predicted_label]))

@@ -4,11 +4,6 @@
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}">
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/common.css') }}"> 
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/te.css') }}">
-<!-- <script type="text/javascript" src="{{ url_for('static', filename='js/xlsx.min.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='js/common.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='js/te.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='js/plugins.js') }}"></script> -->
 {% endblock %}
 
 
@@ -16,7 +11,7 @@
  <!--  <div class="w3-row w3-padding-64"> --> 
  <div class="w3-row">
     <div class="w3-twothird w3-container"   style="width:1000px">
-	<h1 class="w3-text-teal">Risultato:</h1>
+	<h1 class="w3-text-teal">Results:</h1>
      <p>
      {% if results %}
      <table border='1' class='dataframe'  id='idTable'> 
@@ -24,10 +19,10 @@
 		     <a href="{{ url_for('download', filename=linkxls) }}"><button class="btn btn-default xls">Export to xls</button></a>
 		     <a href="{{ url_for('download', filename=linkcsv) }}"><button class="btn btn-default csv">Export to csv</button></a>
 	     </caption>
-     <thead><tr style='text-align: right;'><th style='font-size: 12pt'>id</th><th  style='font-size: 12pt'>testo</th><th  style='font-size: 12pt'>classe</th></thead>
+     <thead><tr style='text-align: right;'><th style='font-size: 12pt'>id</th><th  style='font-size: 12pt'>text</th><th  style='font-size: 12pt'>label</th></thead>
     <tbody> 
      {% for row in results %}
-    	 <tr><td>{{ row['id'] }}</td><td style="text-align: justify">{{ row['testo'] }}</td><td style='text-align: right'><b>{{ row['classe'] }}</b></td> </tr>
+    	 <tr><td>{{ row['id'] }}</td><td style="text-align: justify">{{ row['text'] }}</td><td style='text-align: right'><b>{{ row['label'] }}</b></td> </tr>
       {% endfor %}
       </tbody>
      </table>

@@ -7,7 +7,7 @@ import os, json, time
 import pandas as pd
 pd.set_option('display.max_colwidth',100)
 import requests
-from flask import Blueprint, render_template, request, redirect, url_for, current_app
+from flask import Blueprint, render_template, flash, request, redirect, url_for, current_app
 from config.websetting import *
 
 def gen_codice():
@@ -27,28 +27,28 @@ def classifier():
         codice=request.form.get('codice')
         testo=request.form.get('testo')
         modello=request.form.get('classifier')
-        current_app.logger.debug("inserito file: %s", filepath)
-        current_app.logger.debug("inserito codice: %s", codice)
-        current_app.logger.debug("inserito testo: %s", testo)
-        current_app.logger.debug("inserito modello: %s", modello)
+        current_app.logger.debug("File Selected: %s", filepath)
+        current_app.logger.debug("Code entered: %s", codice)
+        current_app.logger.debug("Text entered: %s", testo)
+        current_app.logger.debug("Model entered: %s", modello)
         list_doc=[]
         list_cod=[]
         if not  filepath and not testo:
-            #flash('Attenzione non sono stati caricati dati da classificare' , 'warning')
-            current_app.logger.debug('Attenzione non sono stati caricati dati da classificare')
+            flash('Warning: no data uploaded for labeling' , 'warning')
+            current_app.logger.debug('Warning: no data uploaded for labeling')
             return redirect(url_for('main'))
         if not filepath:
             if not codice:
                 codice=gen_codice()
-            current_app.logger.debug('Presente solo testo da classificare')
-            current_app.logger.debug('generato codice: %s', codice)    
+            current_app.logger.debug('Only text data present')
+            current_app.logger.debug('Generate unique document identifier: %s', codice)    
             filepath=None
             list_doc.append(testo)
             list_cod.append(codice)
             #doc={'codice': list_cod, "testo": list_doc}
         if not testo:
             testo=None
-            current_app.logger.debug('Presente solo file da classificare')
+            current_app.logger.debug('Only documents file present')
             filepath=os.path.join(current_app.config['UPLOAD_FOLDER'], filepath)
             if filepath.lower().endswith(('.xls', '.xlsx')):
                 #xl = pd.ExcelFile(filepath, encoding='utf-8')
@@ -64,8 +64,8 @@ def classifier():
         if filepath and testo:
             if not codice:
                 codice=gen_codice()
-            current_app.logger.debug('Presente  sia file che testo da classificare')
-            current_app.logger.debug('generato codice: %s', codice)
+            current_app.logger.debug('select both documents file and text to be labeled')
+            current_app.logger.debug('Generate unique document identifier: %s', codice)
             filepath=os.path.join(current_app.config['UPLOAD_FOLDER'], filepath)
             # if file xlsx or xls has more sheet, take always the first sheet
             if filepath.lower().endswith(('.xls', '.xlsx')):
@@ -83,45 +83,45 @@ def classifier():
         #set dictionary input for json serialization   
         doc={'codice': list_cod, "testo": list_doc}
         payload= json.dumps(doc, indent=4)
-        current_app.logger.debug('Generato json')
+        current_app.logger.debug('json created')
         # send request to API REST endpoint
         if modello == 'BOW_MLP':
-            current_app.logger.debug('Scelto modello di classificatore: %s', modello)
+            current_app.logger.debug('Selected model: %s', modello)
             r = requests.post(API_REST_MLP, json=payload).json()
         elif modello == 'BOW_20000_MLP':
-            current_app.logger.debug('Scelto modello di classificatore: %s', modello)
+            current_app.logger.debug('Selected model:  %s', modello)
             r = requests.post(API_REST_MLPFS, json=payload).json()  
         elif modello == 'BOW_SVM':
-            current_app.logger.debug('Scelto modello di classificatore: %s', modello)
+            current_app.logger.debug('Selected model:  %s', modello)
             r = requests.post(API_REST_SVM, json=payload).json()
         elif modello == 'BOW_20000_SVM':
-            current_app.logger.debug('Scelto modello di classificatore: %s', modello)
+            current_app.logger.debug('Selected model:  %s', modello)
             r = requests.post(API_REST_SVMFS, json=payload).json()
         elif modello == 'BOW_CNB':
-            current_app.logger.debug('Scelto modello di classificatore: %s', modello)
+            current_app.logger.debug('Selected model:  %s', modello)
             r = requests.post(API_REST_CNB, json=payload).json()
         elif modello == 'BOW_20000_CNB':
-            current_app.logger.debug('Scelto modello di classificatore: %s', modello)
+            current_app.logger.debug('Selected model:  %s', modello)
             r = requests.post(API_REST_CNBFS, json=payload).json()
         elif modello == 'BOW_PAC':
-            current_app.logger.debug('Scelto modello di classificatore: %s', modello)
+            current_app.logger.debug('Selected model:  %s', modello)
             r = requests.post(API_REST_PAC, json=payload).json()
         elif modello == 'BOW_20000_PAC':
-            current_app.logger.debug('Scelto modello di classificatore: %s', modello)
+            current_app.logger.debug('Selected model:  %s', modello)
             r = requests.post(API_REST_PACFS, json=payload).json()    
         else:
-            current_app.logger.debug('Scelto modello di classificatore: %s', modello)
+            current_app.logger.debug('Selected model:  %s', modello)
             r = requests.post(API_REST_DL, json=payload).json()
         # ensure the request was sucessful
-        df=pd.DataFrame(columns=['id', 'testo', 'classe'])
+        df=pd.DataFrame(columns=['id', 'text', 'label'])
         i=0
         if r["success"]:
             for (i, result) in enumerate(r["prediction"]):
                 # put results in dataframe object 
-                record="id:  {}  classe: {}".format(result['did'], result['classe'])
+                record="id:  {}  label: {}".format(result['did'], result['classe'])
                 df.loc[i, 'id'] = result['did']
-                df.loc[i,'testo' ]= result['testo']
-                df.loc[i,'classe']= result['classe']
+                df.loc[i,'text' ]= result['testo']
+                df.loc[i,'label']= result['classe']
                 current_app.logger.debug(record)  
             timestr = time.strftime("%Y%m%d-%H%M%S")
             df.to_excel('./tmp/results-{}.xls'.format(timestr), index=False,  encoding='utf-8')

@@ -43,25 +43,25 @@ def upload_file():
     if request.method == 'POST':
         # check if the post request has the file part
         if 'file' not in request.files:
-            app.logger.debug("nessun file inserito")
-            flash("Nessun file inserito", category='info')
+            app.logger.debug("no file selected")
+            flash("no file selected", category='info')
             return redirect("/")
         file = request.files['file']
-        app.logger.debug("inserito il file: %s", file)
+        app.logger.debug("file uploaded: %s", file)
         # if user does not select file, browser also
         # submit an empty part without filename
         if file.filename == '':
-            app.logger.debug('Nessun file selezionato')
-            flash("Nessun file selezionato", category='info')
+            app.logger.debug('no file selected')
+            flash("no file selected", category='info')
             return redirect("/")
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            app.logger.debug("file salvato: %s", filename)
+            app.logger.debug("file uploaded: %s", filename)
             #flash("caricato file di input: {}".format(filename), category='info')
             return render_template('upload.html', filename=filename)
         else:
-            flash("file di input: {} non valido, file validi .xlsx ,.xls e .csv ".format(file.filename), category='info')
+            flash("file {} not valid, file types allowed: .xlsx ,.xls and .csv ".format(file.filename), category='info')
     return  redirect("/")
 
 @app.route('/upload2', methods=['GET', 'POST'])
@@ -69,25 +69,25 @@ def upload2_file():
     if request.method == 'POST':
         # check if the post request has the file part
         if 'file' not in request.files:
-            app.logger.debug("nessun file inserito")
-            #flash("Nessun file inserito", category='info')
+            app.logger.debug("no file selected")
+            flash("no file selected", category='info')
             return redirect("/train")
         file = request.files['file']
-        app.logger.debug("inserito il file: %s", file)
+        app.logger.debug("file uploaded: %s", file)
         # if user does not select file, browser also
         # submit an empty part without filename
         if file.filename == '':
-            app.logger.debug('Nessun file selezionato')
-            flash("Nessun file selezionato", category='info')
+            app.logger.debug('no file selected')
+            flash("no file selected", category='info')
             return redirect("/train")
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            app.logger.debug("file salvato: %s", filename)
+            app.logger.debug("file uploaded: %s", filename)
             #flash("caricato file di input: {}".format(filename), category='info')
             return render_template('upload2.html', filename=filename)
         else:
-            flash("file di input: {} non valido, file validi .xlsx ,.xls e .csv ".format(file.filename), category='info')
+            flash("file {} not valid, file types allowed: .xlsx ,.xls and .csv ".format(file.filename), category='info')
     return  redirect("/train")
 
 

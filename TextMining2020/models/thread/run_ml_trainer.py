@@ -39,10 +39,10 @@ def selectModel(modello,filtro,stop_words,random_state):
     STOP_WORDS=stop_words
     score_func=mutual_info_classif
     ### SET MODELs, INPUT SHAPE and OUTPUT DIRECTORY 
-    if MODEL=='BOW_SVM' or MODEL=='BOW_{}_SVM'.format(main.MAX_WORDS):
+    if MODEL=='BOW_SVM' or MODEL=='BOW_SVM_{}'.format(main.MAX_WORDS):
         model = create_sklearn_modelSVC(random_state)
         if FEATURE_SELECTION == 'True':
-            MODEL='BOW_{}_SVM'.format(main.MAX_WORDS)
+            MODEL='BOW_SVM_{}'.format(main.MAX_WORDS)
             OUTPUT_DIR=os.path.join(main.BASE_DIR, MODEL)
             # create path for results save
             if not os.path.exists(OUTPUT_DIR):
@@ -61,10 +61,10 @@ def selectModel(modello,filtro,stop_words,random_state):
             vectorizer = TfidfVectorizer(lowercase=True, analyzer = 'word',  decode_error='replace' , encoding='utf-8', stop_words=STOP_WORDS)
             # SET PIPELINE
             pipe = Pipeline([('tfidf',vectorizer),('model', model)])
-    elif MODEL=='BOW_CNB' or MODEL=='BOW_{}_CNB'.format(main.MAX_WORDS):
+    elif MODEL=='BOW_CNB' or MODEL=='BOW_CNB_{}'.format(main.MAX_WORDS):
         model = create_sklearn_modelCNB(random_state)
         if FEATURE_SELECTION == 'True':
-            MODEL='BOW_{}_CNB'.format(main.MAX_WORDS)
+            MODEL='BOW_CNB_{}'.format(main.MAX_WORDS)
             OUTPUT_DIR=os.path.join(main.BASE_DIR, MODEL)
             # create path for results save
             if not os.path.exists(OUTPUT_DIR):
@@ -83,11 +83,11 @@ def selectModel(modello,filtro,stop_words,random_state):
             vectorizer = TfidfVectorizer(lowercase=True, analyzer = 'word',  decode_error='replace' , encoding='utf-8', stop_words=STOP_WORDS)
             # SET PIPELINE
             pipe = Pipeline([('tfidf',vectorizer),('model', model)])
-    elif MODEL=='BOW_PAC' or MODEL=='BOW_{}_PAC'.format(main.MAX_WORDS):
+    elif MODEL=='BOW_PAC' or MODEL=='BOW_PAC_{}'.format(main.MAX_WORDS):
         model = create_sklearn_modelPAC(random_state)
         #model = PassiveAggressiveClassifier(C=0.001, max_iter=1000, random_state=random_state)
         if FEATURE_SELECTION == 'True':
-            MODEL='BOW_{}_PAC'.format(main.MAX_WORDS)
+            MODEL='BOW_PAC_{}'.format(main.MAX_WORDS)
             OUTPUT_DIR=os.path.join(main.BASE_DIR, MODEL)
             # Create path for results save
             if not os.path.exists(OUTPUT_DIR):
@@ -106,10 +106,10 @@ def selectModel(modello,filtro,stop_words,random_state):
             vectorizer = TfidfVectorizer(lowercase=True, analyzer = 'word',  decode_error='replace' , encoding='utf-8', stop_words=STOP_WORDS)
             # SET PIPELINE
             pipe = Pipeline([('tfidf',vectorizer),('model', model)])
-    elif MODEL=='BOW_MLP' or MODEL=='BOW_{}_MLP'.format(main.MAX_WORDS):
+    elif MODEL=='BOW_MLP' or MODEL=='BOW_MLP_{}'.format(main.MAX_WORDS):
         model=create_sklearn_modelMLP()
         if FEATURE_SELECTION == 'True':
-            MODEL='BOW_{}_MLP'.format(main.MAX_WORDS)
+            MODEL='BOW_MLP_{}'.format(main.MAX_WORDS)
             OUTPUT_DIR=os.path.join(main.BASE_DIR, MODEL)
             # Create path for results save
             if not os.path.exists(OUTPUT_DIR):
@@ -156,7 +156,7 @@ def ml_trainer():
             
             # set document ID (docIDs)
             docIDs=q['id']
-            print('Numero di classi: ', main.NCLASSI)
+            print('Classes number: ', main.NCLASSI)
             # fix random seed for reproducibility
             seed = 777
             random_state=seed
@@ -171,11 +171,11 @@ def ml_trainer():
             X_train, y_train, class_dic, ordina = preProcessing(documents)
             target_names = ["classe {}".format(x) for x in class_dic.keys()]
             if not analisi:
-                print('entro nel blocco not analisi')
+                print('Not Analysis section block')
                 piperun, output_dir, set_model  =  selectModel(modello,filtro,stop_words,random_state)
                 
                 print('output directory: {}'.format(output_dir))
-                print('modello da addestrare: {}'.format(set_model))
+                print('model selected: {}'.format(set_model))
                 
                 ### FIT MODEL
                 print('FIT PIPELINE')
@@ -195,7 +195,7 @@ def ml_trainer():
                 time_elapsed=time.strftime("%H:%M:%S", time.gmtime(time_elapsed)) 
                 output={'modello': set_model, 'time_elapsed': time_elapsed, 'output_dir': output_dir}
             else:
-                print('entro nel blocco analisi')
+                print('Analysis section block')
                 data_corpus=X_train
                 labels=y_train
                 cm_tot=0
@@ -205,7 +205,7 @@ def ml_trainer():
                 for train_index, test_index in skf.split(data_corpus, labels):    
                     k+=1
                     #if k>2:  continue
-                    print('--------INIZIO --- CICLO {0} ---------------' .format(k))
+                    print('--------START CYCLE {0} ---------------' .format(k))
                     X_train, X_test = data_corpus.iloc[train_index].values, data_corpus.iloc[test_index].values
                     y_train, y_test = labels[train_index], labels[test_index]
                     print('Shape of X train and X validation tensor:', X_train.shape,X_test.shape)
@@ -237,7 +237,7 @@ def ml_trainer():
                     
                     ### EVALUATION
                     score=accuracy_score(y_test, y_pred) * 100
-                    print(" Ciclo %d Accuracy: %.2f%%" % (k, score))
+                    print(" Cycle %d Accuracy: %.2f%%" % (k, score))
                     cvscores.append(score)                
                     
                     # COMPUTE CONFUSION MATRIX  
@@ -251,15 +251,15 @@ def ml_trainer():
                     prec_macro_scores.append(prec_macro*100)
                     recall_macro_scores.append(recall_macro*100)
                     fscore_macro_scores.append(fscore_macro*100)
-                    print('precision macro: ' , prec_macro)
-                    print('recall macro: ' , recall_macro)
-                    print('F1score macro: ' , fscore_macro)
+                    print('precision (weighted average): ' , prec_macro)
+                    print('recall (weighted average): ' , recall_macro)
+                    print('F1score (weighted average): ' , fscore_macro)
                     # SAVE ALL CALSSES METRICS FOR EVERY FOLD IN A DATAFRAME 
                     df=pd.DataFrame()
                     i=range(main.NCLASSI)
                     df=pd.DataFrame({'CLASSE' : pd.Series(target_names, index=i) , 'PRECISION' : pd.Series(precision, index=i).round(2),'RECALL' : pd.Series(recall, index = i).round(2), 'F1SCORE' : pd.Series(fscore, index = i).round(2)}) # 'AUC' : pd.Series(roc_auc, index = i).round(2)})
                     results_tfidf=results_tfidf.append(df, ignore_index=True, sort=False)
-                    print('---------FINE ------ CICLO {0} ---------------' .format(k))
+                    print('---------END CYCLE {0} ---------------' .format(k))
                 
                 # Compute confusion matrix
                 if main.PLOT_CM=='True':
@@ -268,7 +268,7 @@ def ml_trainer():
                     np.set_printoptions(precision=2)
                     #Plot non-normalized confusion matrix
                     plt.figure(6)
-                    plot_confusion_matrix(cm_tot.astype(int), classes=ordina, output=output_dir)    
+                    plot_confusion_matrix(cm_tot.astype(int), ordina, output_dir)    
             
                 dfdoc={}        
                 dftotale={}
@@ -282,22 +282,15 @@ def ml_trainer():
                 results_tfidf=results_tfidf.assign(ordina=ordina)
                 results_tfidf['ordina']=results_tfidf.ordina.astype(int)
                 results_tfidf=results_tfidf.sort_values(by='ordina')
-                #results_tfidf=results_tfidf.drop(['ordina'], axis=1)
-                
-                #print(results_tfidf.index.values)
-                #dfclass={'Classe': results_tfidf.index.values.tolist(), 'PPV': results_tfidf['PRECISION'].tolist(), 'TPR': results_tfidf['RECALL'].tolist(), 
-                #         'Fmeasure': results_tfidf['F1SCORE'].tolist()}
+
                 dfclass={'Classe': results_tfidf['ordina'].tolist(), 'PPV': results_tfidf['PRECISION'].tolist(), 'TPR': results_tfidf['RECALL'].tolist(), 
                          'Fmeasure': results_tfidf['F1SCORE'].tolist()}
-                
-                
+                                
                 df=pd.DataFrame()
                 ind=range(len(cvscores))
                 df=pd.DataFrame({'Accuracy' : pd.Series(cvscores, index = ind).round(1), 'Precision': pd.Series(prec_macro_scores, index=ind).round(1), 
                                  'Recall': pd.Series(recall_macro_scores, index=ind).round(1), 'F1score': pd.Series(fscore_macro_scores, index=ind).round(1)})
                 dfdoc={'Accuratezza': df.Accuracy.tolist(), 'Precisione': df.Precision.tolist(), 'Recall': df.Recall.tolist(), 'F1score': df.F1score.tolist()}
-                #doc={'codice': documents['id'].tolist(), "testo": documents['testo'].tolist(), "classe": documents['cap_maj_master'].tolist()}
-                #df_accuratezza_scores.to_csv(os.path.join(foldpath,"accuratezza_"+modello+"_folds.csv"), encoding='utf-8' )
                 df=pd.DataFrame()
                 df=pd.DataFrame([[set_model, np.mean(cvscores).round(1),  np.std(cvscores).round(1), np.max(cvscores).round(1), np.mean(prec_macro_scores).round(1), 
                                   np.mean(recall_macro_scores).round(1), np.mean(fscore_macro_scores).round(1)]], 

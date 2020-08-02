@@ -21,7 +21,7 @@ def preProcessing(documents):
     documents=documents[pd.notnull(documents['labels'])]
     documents=documents[pd.notnull(documents['testo'])]
     # print(documents['cap_maj_master'].isnull().sum())
-    print("Numero di documenti da processare: %d" %  len(documents))
+    print("Number of documents to be labeled: %d" %  len(documents))
     # remove repeat words along documents, remove digits and other characters
     regex_pat = re.compile(r'premesso|quale|\d+|\(\d+\)|:|,|-', flags=re.IGNORECASE)
     documents['testo']=documents['testo'].str.replace(regex_pat,'')

@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<!--  <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> -->
 <html lang="en">
 <head>
 <title>Text Classifier</title>
@@ -58,14 +60,17 @@ function validateForm() {
 	var z = document.forms["form2"]["codice"].value;
 
 	  if ((x == "" && y ==  "") || (x == null && y == null) || (x == null && y == "")){
-	    alert("Caricare un file e/o un testo da classificare");
+	    //alert("Caricare un file e/o un testo da classificare");
+	    alert("Upload file and/or text to label")
 	    return false;
 	  }
 	  if ((y != "") && (z == "")){
-		  return confirm("non è stato assegnato nessun identificativo documento\n se non viene specificato il sistema ne assegnerà uno in automatico.\n \n Vuoi continuare?");
+		  //return confirm("non è stato assegnato nessun identificativo documento\n se non viene specificato il sistema ne assegnerà uno in automatico.\n \n Vuoi continuare?");
+		  return confirm("No document ID has been assigned\n if it is not specified, the system will automatically assign one.\n \n Do you want to continue?");
 	  }
 	  if ((y == "") && (z != "")){
-		  alert("Nessun documento associato all'identificativo inserito");
+		  //alert("Nessun documento associato all'identificativo inserito");
+		  alert("No documents associated with the identification entered");
 		  return false;
 	  }
 	return true;	  

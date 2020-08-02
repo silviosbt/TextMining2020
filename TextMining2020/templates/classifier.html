@@ -41,10 +41,10 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
 
   <div class="w3-row w3-padding-64">
     <div class="w3-twothird w3-container"   style="width:1000px">
-      <h1 class="w3-text-teal">Carica Dati da Classificare</h1>
+      <h1 class="w3-text-teal">Text labeling procedure</h1>
       <p>
       <form action="{{ url_for('upload_file') }}"method=post enctype=multipart/form-data>
-      	caricare un file excel o csv: 
+      	Upload excel or csv file: 
       	<input type=file name=file>
       	<input type=submit value=Upload>
       </form>
@@ -54,11 +54,11 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
       <form name="form2"  action="{{ url_for('appClassifier.classifier') }}"  onsubmit="return validateForm()" method="post" >
       <input type="hidden" id="filepath" name="filepath" value="{{ filename }}">  
   		<div>
-    		<label for="codice">Identificativo documento:</label>
+    		<label for="codice">Document identifier:</label>
     		<input type="text" id="codice" name="codice">
   		</div>
   		<div>
-    		<label for="testo">Inserisci testo da classificare:</label>
+    		<label for="testo">Edit or paste text to label:</label>
     		<textarea id="testo" name="testo"  rows="4" cols="100"></textarea>
   		</div>
   		<div>
@@ -66,7 +66,7 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
   		<hr width=100% size=6 color=#000000>
         
         <p>
-      	<label for="classifier"><span>Scegliere classificatore:</span></label>
+      	<label for="classifier"><span>Select classifier:</span></label>
         <select id="idclassifier" name="classifier">
         	<option value="BOW_SVM">SVM (no feature selection)</option>
         	<option value="BOW_20000_SVM">SVM (with feature selection)</option>
@@ -78,15 +78,15 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
         	<option value="BOW_20000_PAC">PAC (with feature selection)</option>
         	<option value="DEEPLEARNING">DEEP LEARNING MODEL</option>
        </select>
-       <input type=submit value=classifica>
+       <input type=submit value=SUBMIT>
        </div>
 	</form> 
 	<br/>
-	<h1 class="w3-text-teal">Risultato:</h1>
+	<h1 class="w3-text-teal">Score:</h1>
      <p>
      {% if results %}
      <table border='1' class='dataframe'  id='idTable'> 
-     <thead><tr style='text-align: right;'><th style='font-size: 12pt'>id</th><th  style='font-size: 12pt'>testo</th><th  style='font-size: 12pt'>classe</th></thead>
+     <thead><tr style='text-align: right;'><th style='font-size: 12pt'>id</th><th  style='font-size: 12pt'>text</th><th  style='font-size: 12pt'>label</th></thead>
     <tbody> 
      {% for row in results %}
     	 <tr><td>{{ row['id'] }}</td><td style="text-align: justify">{{ row['testo'] }}</td><td style='text-align: right'><b>{{ row['classe'] }}</b></td> </tr>
@@ -166,14 +166,17 @@ function validateForm() {
 	var z = document.forms["form2"]["codice"].value;
 
 	  if ((x == "" && y ==  "") || (x == null && y == null) || (x == null && y == "")){
-	    alert("Caricare un file e/o un testo da classificare");
+	    //alert("Caricare un file e/o un testo da classificare");
+	    alert("Upload file and/or text to label")
 	    return false;
 	  }
 	  if ((y != "") && (z == "")){
-		  return confirm("non è stato assegnato nessun identificativo documento\n se non viene specificato il sistema ne assegnerà uno in automatico.\n \n Vuoi continuare?");
+		  //return confirm("non è stato assegnato nessun identificativo documento\n se non viene specificato il sistema ne assegnerà uno in automatico.\n \n Vuoi continuare?");
+		  return confirm("No document ID has been assigned\n if it is not specified, the system will automatically assign one.\n \n Do you want to continue?");
 	  }
 	  if ((y == "") && (z != "")){
-		  alert("Nessun documento associato all'identificativo inserito");
+		  //alert("Nessun documento associato all'identificativo inserito");
+		  alert("No documents associated with the identification entered");
 		  return false;
 	  }
 	return true;	  

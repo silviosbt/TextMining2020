@@ -2,19 +2,18 @@
 {% block content %}
   <div class="w3-row w3-padding-64">
     <div class="w3-twothird w3-container">
-      <h1 class="w3-text-teal">Classificatore di testi</h1>
+      <h1 class="w3-text-teal">Question Time Intelligent System</h1>
       <p style="text-align: justify">
-      Questa applicazione è uno strumento per la classificazione di atti parlamentari che utilizza 3 modelli distinti di classificatori addestrati secondo 
-      un approccio supervisionato. I 3 classificatori che l'applicazione mette a disposizione sono:
+      An Intelligent System for the Categorization of Question Time Official Documents of the Italian Chamber of Deputies<br><br>
+      Available models:
       <ul>
       <li>Support Vector Machine (SVM)</li>
       <li>Multi-Layer Percetron (MLP)</li>
+      <li>Complement Naive Bayes (CNB)</li>
+      <li>Passive Aggressive Classifier (PAC)</li> 
       <li>Convolutional Neural Network (CNN)</li>
       </ul> 
-      <p style="text-align: justify">
-      Ogni classificatore è stato addestrato e valutato sullo stesso corpus di documenti attraverso un approccio <i>kfold-cross validation stratificato</i>. 
-      I cicli di partizionamento del dataset in training-set e test-set utilizzati sono stati 10 (k=10) e ad ogni ciclo il traning-set relativo è stato addestrato per 20
-      epoche.   
+      <p style="text-align: justify">   
     </div>
   </div>
  {% endblock %}     

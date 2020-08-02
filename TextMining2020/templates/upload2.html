@@ -2,14 +2,14 @@
 {% block content %}
   <div class="w3-row w3-padding-64">
     <div class="w3-twothird w3-container">
-      <h1 class="w3-text-teal">Carica Dataset per Addestramento</h1>
+      <h1 class="w3-text-teal">Model training procedure</h1>
       <p>
       <!--  <form action="{{ url_for('upload_file') }}"method=post enctype=multipart/form-data> -->
       	
       	<form action="{{ url_for('upload2_file') }}"  method=post>
-      	  <label for="file">caricato il file:  <b>{{ filename }}</b></label>
+      	  <label for="file">file uploaded:  <b>{{ filename }}</b></label>
       	  <input type="hidden"  id="file"  name="file" value="">  
-      	  <input type=submit value="Cambia"> 
+      	  <input type=submit value="Change"> 
       </form>
       <!--  <script>document.foo.submit();</script>-->
     <hr width=100% size=6 color=#000000>
@@ -18,30 +18,30 @@
        <input type="hidden" id="filepath" name="filepath" value="{{ filename }}">
    		<div>
   			 <input type="checkbox"  id="vocab" name="vocab"  value="True">
-  			 <label for="vocab">Utilizzare feature selection:</label>
+  			 <label for="vocab">Feature selection</label>
   		</div>
   		<div>
   		    <!--  <input type="checkbox"  id="analisi" name="analis"  value="True"> -->
   		    <input type="checkbox" id="check" onclick="toggleBoxVisibility()" name="stratifiedCV"  value="true">
-    		<label for="stratifiedCV">Analisi kfold cross validation stratificata a doppio ciclo:</label>
+    		<label for="stratifiedCV">Stratified kfold cross validation analysis</label>
   		</div>
   		<div id="boxfold"  style="visibility: hidden"> 
-  			<label for="kfold"><span>Scegliere numero di fold</span></label>	
+  			<label for="kfold"><span>Select folds number</span></label>	
         	<select id="idfold" name="kfold">
-        		<option value=5>5 fold</option>
-        		<option value=10>10 fold</option>
+        		<option value=5>5 folds</option>
+        		<option value=10>10 folds</option>
        		</select>
   		</div>
   		<p><hr width=100% size=6 color=#000000>
-      	<label for="trainer"><span>Scegliere modello  da addestrare:</span></label>
+      	<label for="trainer"><span>Select model to train:</span></label>
         <select id="trainer" name="trainer">
         	<option value="BOW_SVM">SVM (Support Vector Machine)</option>
         	<option value="BOW_CNB">CNB (Complement Naive Bayes)</option>
         	<option value="BOW_PAC">PAC (Passive-Aggressive Algorithms)</option>
-        	<option value="BOW_MLP">MLP (NN MultiLayer Percetron)</option>
+        	<option value="BOW_MLP">MLP (NN MultiLayer Perceptron)</option>
         	<!--   <option value="CNN">CNN (Convolutional Neural Network)</option> -->
        </select>
-       <input type=submit value=addestra>
+       <input type=submit value=train>
 	</form>      
     </div>
   </div>
