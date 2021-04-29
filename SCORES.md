@@ -1,7 +1,7 @@
 # An Intelligent System for the Categorization of Question Time Official Documents of the Italian Chamber of Deputies
-*Alice Cavalieri, Pietro Ducange, Silvio Fabi, Federico Russo, Nicola Tonellotto*
+<!--*Alice Cavalieri, Pietro Ducange, Silvio Fabi, Federico Russo, Nicola Tonellotto*-->
 
-> Manuscript under review at Expert Systems with Applications
+<!--> Manuscript under review at Expert Systems with Applications-->
 
 In the following, we report the average values and standard deviations (over the 20 test sets of the cross validation) of precision, recall, and F1-measure per class and for each text classification model on the experimental dataset described in the manuscript.
 
