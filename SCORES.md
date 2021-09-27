@@ -24,7 +24,7 @@ In the following, we report the average values and standard deviations (over the
     + Using FastText:
         * [Convolutiona Neural Network (CNN)](#fasttext_cnn)
         * [Long Short Term Memory (LSTM)](#fasttext_lstm)
-- Contextualized word embeddings:
+    + Using contextualized word embeddings:
         * [Transformer Architecture (BERT)](#bert)
 
 ### BOW_CNB_20000
